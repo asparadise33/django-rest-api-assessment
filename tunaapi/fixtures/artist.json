@@ -1,0 +1,29 @@
+[
+  {
+      "model": "tunaapi.artist",
+      "pk": 1,
+      "fields": {
+          "name": "Sturgill Simpson",
+          "age": "42",
+          "bio": "You came for the cover, but you stay for the talent."
+      }
+  },
+  {
+    "model": "tunaapi.artist",
+    "pk": 2,
+    "fields": {
+        "name": "Nick Cave",
+        "age": "65",
+        "bio": "The Balcony man himself."
+    }
+},
+{
+  "model": "tunaapi.artist",
+  "pk": 3,
+  "fields": {
+      "name": "LP",
+      "age": "50",
+      "bio": "Yeah that's right, I wrote One Like You. Deal with it."
+  }
+}
+]

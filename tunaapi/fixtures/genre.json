@@ -1,0 +1,24 @@
+[
+  {
+      "model": "tunaapi.genre",
+      "pk": 1,
+      "fields": {
+          "description": "Real Country"
+          
+      }
+  },
+  {
+    "model": "tunaapi.genre",
+    "pk": 2,
+    "fields": {
+        "description": "Rocking and Rolling"
+    }
+},
+{
+  "model": "tunaapi.genre",
+  "pk": 3,
+  "fields": {
+     "description": "Poppin"
+  }
+}
+]
