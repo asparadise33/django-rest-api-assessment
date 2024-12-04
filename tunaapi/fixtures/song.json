@@ -1,0 +1,32 @@
+[
+  {
+      "model": "tunaapi.song",
+      "pk": 1,
+      "fields": {
+          "title": "One For the Road",
+          "artist_id": "1",
+          "album": "Passage Du Desir",
+          "length": "518"
+      }
+  },
+  {
+    "model": "tunaapi.song",
+    "pk": 2,
+    "fields": {
+        "title": "Balcony Man",
+        "artist_id": "2",
+        "album": "Carnage",
+        "length": "256"
+    }
+},
+{
+  "model": "tunaapi.song",
+  "pk": 3,
+  "fields": {
+      "title": "One Like You",
+      "artist_id": "3",
+      "album": "Love Lines",
+      "length": "203"
+  }
+}
+]
