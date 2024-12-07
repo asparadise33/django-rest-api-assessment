@@ -1,0 +1,47 @@
+"""View module for handling requests about game types"""
+from django.http import HttpResponseServerError
+from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
+from rest_framework import serializers, status
+from tunaapi.models import Song, Genre
+
+
+class SongView(ViewSet):
+    """Tuna Api Songview"""
+
+    def retrieve(self, request, pk):
+        """Handle GET requests for single Song
+
+        Returns:
+            Response -- JSON serialized Song
+        """
+        try:
+            song = Song.objects.get(pk=pk)
+           # genres = Genre.objects.filter(songgenres__song_id=song)
+           # print(genres)
+           #dunderscores gives us the one step access to the song connects the join table
+            
+            serializer = SongSerializer(song)
+            return Response(serializer.data)
+        except Song.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+
+    def list(self, request):
+        """Handle GET requests to get all Songs
+
+        Returns:
+            Response -- JSON serialized list of Songs
+        """
+        songs = Song.objects.all()
+        serializer = SongSerializer(songs, many=True)
+        return Response(serializer.data)
+    
+   
+class SongSerializer(serializers.ModelSerializer):
+    """JSON serializer for songs
+    """
+    class Meta:
+        model = Song
+        fields = ('id', 'title', 'artist_id', 'album', 'length', 'songgenres')
+        depth = 2
