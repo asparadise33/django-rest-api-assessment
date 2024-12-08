@@ -4,6 +4,6 @@ from .genre import Genre
 
 class SongGenre(models.Model):
 
-    song_id = models.ForeignKey(Song, on_delete=models.CASCADE, related_name='songgenres')
-    genre_id = models.ForeignKey(Genre, on_delete=models.CASCADE, related_name='songgenres')
+    song_id = models.ForeignKey(Song, on_delete=models.CASCADE, related_name='songGenres')
+    genre_id = models.ForeignKey(Genre, on_delete=models.CASCADE, related_name='songGenres')
     
