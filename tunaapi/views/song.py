@@ -17,7 +17,7 @@ class SongView(ViewSet):
         """
         try:
             song = Song.objects.get(pk=pk)
-           # genres = Genre.objects.filter(songgenres__song_id=song)
+           # genres = Genre.objects.filter(songGenres__song_id=song)
            # print(genres)
            #dunderscores gives us the one step access to the song connects the join table
             
@@ -84,5 +84,5 @@ class SongSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Song
-        fields = ('id', 'title', 'artist_id', 'album', 'length', 'songgenres')
+        fields = ('id', 'title', 'artist_id', 'album', 'length', 'songGenres')
         depth = 2
