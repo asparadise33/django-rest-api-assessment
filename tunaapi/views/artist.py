@@ -3,7 +3,8 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from tunaapi.models import Artist
+from django.db.models import Count
+from tunaapi.models import Artist, Song
 
 
 class ArtistView(ViewSet):
@@ -17,7 +18,10 @@ class ArtistView(ViewSet):
         """
         try:
             artist = Artist.objects.get(pk=pk)
-            serializer = ArtistSerializer(artist)
+            number_of_songs = Song.objects.annotate(count=Count('song'))
+            artist.number_of_songs=number_of_songs
+            
+            serializer = ArtistDetailSerializer(artist)
             return Response(serializer.data)
         except Artist.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
@@ -29,7 +33,7 @@ class ArtistView(ViewSet):
         Returns:
             Response -- JSON serialized list of Artists
         """
-        artists = Artist.objects.all()
+        artists = Artist.objects.annotate(count=Count('songs'))
         serializer = ArtistSerializer(artists, many=True)
         return Response(serializer.data)
     
@@ -46,7 +50,7 @@ class ArtistView(ViewSet):
         bio=request.data["bio"],
         )
         serializer = ArtistSerializer(artist)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def update(self, request, pk):
         """Handle PUT requests for an artist
@@ -60,21 +64,40 @@ class ArtistView(ViewSet):
         artist.age=request.data["age"]
         artist.bio=request.data["bio"]
         artist.save()
+        serializer = ArtistSerializer(artist)
 
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def destroy(self, request, pk):
         artist = Artist.objects.get(pk=pk)
         artist.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
+
 class ArtistSerializer(serializers.ModelSerializer):
     """JSON serializer for artists
     """
     class Meta:
         model = Artist
-        fields = ('id', 'name', 'age', 'bio', 'songs')
+        fields = ('id', 'name', 'age', 'bio')
         depth = 1
-        
+
+class SongSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Song
+        fields = ('id', 'title', 'album', 'length')
+
+class ArtistDetailSerializer(serializers.ModelSerializer):
+    """JSON serializer for artist details
+    """ 
+    number_of_songs = serializers.IntegerField(default=None)
+    songs = SongSerializer()
+    class Meta:
+        model = Artist
+        fields = fields = ('id', 'name', 'age', 'bio','number_of_songs','songs')
+        #db_table = "songs"
+        depth = 1
+
+           
 
         

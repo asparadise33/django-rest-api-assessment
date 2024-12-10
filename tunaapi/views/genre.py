@@ -45,7 +45,7 @@ class GenreView(ViewSet):
         description=request.data["description"],
         )
         serializer = GenreSerializer(genre)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def update(self, request, pk):
         """Handle PUT requests for an artist
@@ -57,8 +57,9 @@ class GenreView(ViewSet):
         genre = Genre.objects.get(pk=pk)
         genre.description=request.data["description"]
         genre.save()
+        serializer = GenreSerializer(genre)
 
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def destroy(self, request, pk):
         genre = Genre.objects.get(pk=pk)
