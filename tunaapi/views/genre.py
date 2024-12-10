@@ -17,6 +17,7 @@ class GenreView(ViewSet):
         """
         try:
             genre = Genre.objects.get(pk=pk)
+            #song = SongGenre.objects.filter(genre=genre.id)
             serializer = GenreSerializer(genre)
             return Response(serializer.data)
         except Genre.DoesNotExist as ex:
