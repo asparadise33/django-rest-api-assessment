@@ -18,8 +18,8 @@ class ArtistView(ViewSet):
         """
         try:
             artist = Artist.objects.get(pk=pk)
-            number_of_songs = Song.objects.annotate(count=Count('song'))
-            artist.number_of_songs=number_of_songs
+            song_count = Song.objects.filter(artist=artist).count()
+            artist.song_count=song_count
             
             serializer = ArtistDetailSerializer(artist)
             return Response(serializer.data)
@@ -82,21 +82,21 @@ class ArtistSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'age', 'bio')
         depth = 1
 
-class SongSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Song
-        fields = ('id', 'title', 'album', 'length')
+#class SongSerializer(serializers.ModelSerializer):
+   # class Meta:
+        #model = Song
+        #fields = ('id', 'title', 'album', 'length')
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
     """JSON serializer for artist details
     """ 
-    number_of_songs = serializers.IntegerField(default=None)
-    songs = SongSerializer()
+    song_count = serializers.IntegerField(default=None)
+    #songs = SongSerializer()
     class Meta:
         model = Artist
-        fields = fields = ('id', 'name', 'age', 'bio','number_of_songs','songs')
-        #db_table = "songs"
+        fields = fields = ('id', 'name', 'age', 'bio','song_count','songs')
         depth = 1
+        db_table='songs'
 
            
 
